@@ -70,7 +70,9 @@ tell application "Terminal"
     activate
     set var1 to "{0}"
     set var2 to "{1}"
-    do script ("cd " &amp; quoted form of var1 &amp; ";" &amp; "tput clear; FINDER_FILE=" &amp; quoted form of var2)
+    set currentTab to do script ("cd " &amp; quoted form of var1 &amp; ";")
+    do script ("tput clear;") in currentTab
+    do script ("FINDER_FILE=" &amp; quoted form of var2 &amp; ";") in currentTab
 end tell
 """
 
@@ -82,8 +84,7 @@ fp_out = fp_dn
 
 p1 = subprocess.Popen(['/usr/bin/osascript', '-'], stdin=subprocess.PIPE, stdout=subprocess.PIPE, shell=False)
 
-stdo, stderr = p1.communicate(myscript.format(fp_out + "/", "./" + fp_bn))
-
+stdo, stderr = p1.communicate(myscript.format(fp_out + "/", "./" + str(fp_bn).splitlines()[0]))
 </string>
 					<key>CheckedForUserDefaultShell</key>
 					<true/>
@@ -199,7 +200,7 @@ stdo, stderr = p1.communicate(myscript.format(fp_out + "/", "./" + fp_bn))
 				<key>isViewVisible</key>
 				<true/>
 				<key>location</key>
-				<string>309.000000:558.000000</string>
+				<string>309.000000:610.000000</string>
 				<key>nibPath</key>
 				<string>/System/Library/Automator/Run Shell Script.action/Contents/Resources/English.lproj/main.nib</string>
 			</dict>
