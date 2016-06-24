@@ -1,0 +1,11 @@
+li ::before {
+    display: inline-block;
+    width: 5px;
+    height: 5px;
+    content: url("../../../../../../../Applications/Coda 2.app/Contents/Resources/SymbolG.pdf");
+    -webkit-transform:scale(0.5);
+    margin: 0;
+    padding: 0;
+    position: absolute;
+    left: 1em;
+}

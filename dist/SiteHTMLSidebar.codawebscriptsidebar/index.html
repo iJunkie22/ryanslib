@@ -1,0 +1,73 @@
+<html>
+	<head>
+		<title>Sidebar Controls</title>		
+<!--
+		<link rel="stylesheet" href="sidebar.css" />
+		<link rel="stylesheet" media="only screen and (-webkit-min-device-pixel-ratio: 2)" href="sidebarRetina.css"  />	
+		-->
+		
+		<style type="text/css" media="screen">
+			
+			
+			#logobackground
+			{
+				bottom: 20pt;
+				margin: auto auto;
+				width: 200px;
+			}
+			
+			#footer
+			{
+				position:fixed;
+				bottom:0px;
+				width:100%;
+			} 
+            #footer span {
+                vertical-align: top;
+                font-size: 25px;
+            }
+            #footer img {
+                float: left;
+            }
+            #footer a {
+                display: block;
+            }
+            #refresh_btn {
+                display: block;
+                width: 100%
+            }
+.child {
+
+margin:0px auto; /*here it will make center */
+}
+			
+		</style>
+
+	<script type="text/javascript">
+		
+		function replaceTextExample()
+		{
+			var range={length:10, location:1};
+			
+			//window.CodaTextView.replaceCharactersInRangeWithString(window.CodaTextView.currentWordRange(), 'Hello World');
+			window.CodaTextView.setSelectedRange(range);
+		}
+		
+	</script>
+        <link rel="stylesheet" href="sitehtml_sb_style.css" />
+	
+	</head>
+	<body>
+        <button id="refresh_btn" onclick="refresh_globals_list()">Refresh</button>
+        <ol id="globals_list">
+        </ol>
+		
+		<div id="footer">
+			<img class="child" src="SiteHTML_25.png" width="25" height="25" />
+            <span class="child">SiteHTML 1.5.2</span>
+            <a href="https://pypi.python.org/pypi/SiteHTML/1.5.2">Check out SiteHTML on PyPi</a>
+		</div>
+        <script src="sitehtml_sb.js"></script>
+		
+	</body>
+</html>

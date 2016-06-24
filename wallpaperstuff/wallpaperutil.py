@@ -56,7 +56,7 @@ def get_wallpaper_colors(verbose=False):
     colors_values_dict = {}
     colors_values_dict_keys = colors_values_dict.viewkeys()
 
-    for im_color in im1.getcolors(maxcolors=99999):
+    for im_color in im1.getcolors(maxcolors=999999999):
         r, g, b = im_color[1]
         if r == g and g == b:
             grayscales_list.append(im_color)
