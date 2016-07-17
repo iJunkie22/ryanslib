@@ -9,6 +9,8 @@ class AppleInterFaceStyle(int, object):
     def name(self):
         return ('Light', 'Dark')[self]
 
+styles = ('0', '1', 'Light', 'Dark', 'light', 'dark', 0, 1)
+
 
 def refresh_ui_theme():
     notif_class = Foundation.NSDistributedNotificationCenter
@@ -23,12 +25,14 @@ def set_menu_style(new_style=1):
     p1.wait()
     return p1.returncode
 
-if __name__ == '__main__':
-    styles = ('0', '1', 'Light', 'Dark', 'light', 'dark', 0, 1)
-    if len(sys.argv) == 2 and sys.argv[1] in styles:
-        style_int = styles.index(sys.argv[1]) % 2
+
+def main(args):
+    if len(args) == 2 and args[1] in styles:
+        style_int = styles.index(args[1]) % 2
         set_menu_style(style_int)
         refresh_ui_theme()
-
     else:
         print 'USAGE: ' + str(sys.argv[0]) + ' ' + repr(list(styles))
+
+if __name__ == '__main__':
+    main(sys.argv)
