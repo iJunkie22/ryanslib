@@ -12,12 +12,44 @@ PXMLayerTypes = namedtuple('PXMLayerTypes',
                              'com.pixelmatorteam.pixelmator.layer.vector')
 
 
+class NSClassFactory(object):
+    @staticmethod
+    def NSClassDict():
+        return dict(
+            filter(
+                lambda x: type(x[1]) == type and x[0].startswith('NS'),
+                globals().viewitems()))
+
+    @classmethod
+    def FromNSArchivedPlist(cls, nsap):
+        """
+        :type nsap: NSArchivedPlist
+        """
+        rp = nsap.real_plist
+        class_str = rp['$class']
+        class_obj = cls.NSClassDict()[class_str]
+        if issubclass(class_obj, dict):
+            return class_obj(rp)
+        else:
+            return class_obj.from_dict(rp)
+
+    @classmethod
+    def FromBiPlistStr(cls, bpls):
+        r1 = biplist.readPlistFromString(bpls)
+        r2 = NSArchivedPlist.load(r1)
+        return cls.FromNSArchivedPlist(r2)
+
+
 class NSMutableData(biplist.Data):
-    pass
+    @classmethod
+    def from_dict(cls, d1):
+        return cls(d1['NS.data'])
 
 
 class NSData(biplist.Data):
-    pass
+    @classmethod
+    def from_dict(cls, d1):
+        return cls(d1['NS.data'])
 
 
 class NSName(str):
@@ -38,6 +70,18 @@ class NSMutableDictionary(dict):
 
 class NSDictionary(dict):
     pass
+
+
+class NSMutableString(str):
+    @classmethod
+    def from_dict(cls, d1):
+        return cls(d1['NS.string'])
+
+
+class NSString(str):
+    @classmethod
+    def from_dict(cls, d1):
+        return cls(d1['NS.string'])
 
 
 class NSFont(dict):
@@ -358,10 +402,7 @@ class AppleTermPrefs(object):
     @property
     def BackgroundImageBookmark(self):
         r1 = self.main_pl['BackgroundImageBookmark']
-        r2 = biplist.readPlistFromString(r1.data)
-        r3 = NSArchivedPlist.load(r2)
-        r4 = r3.q_ns_class(2)(r3.arc_plist['$objects'][1])
-        return r4
+        return NSClassFactory.FromBiPlistStr(r1.data)
 
     @property
     def BackgroundSettingsForInactiveWindows(self):
@@ -386,11 +427,11 @@ class AppleTermPrefs(object):
 
     @property
     def CursorColor(self):
+        """
+        :rtype: NSColor
+        """
         r1 = self.main_pl['CursorColor']
-        r2 = biplist.readPlistFromString(r1.data)
-        r3 = NSArchivedPlist.load(r2)
-        r4 = r3.q_ns_class(2)(r3.arc_plist['$objects'][1])
-        return r4
+        return NSClassFactory.FromBiPlistStr(r1.data)
 
     @property
     def DisableANSIColor(self):
@@ -408,11 +449,11 @@ class AppleTermPrefs(object):
 
     @property
     def Font(self):
+        """
+        :rtype: NSFont
+        """
         r1 = self.main_pl['Font']
-        r2 = biplist.readPlistFromString(r1.data)
-        r3 = NSArchivedPlist.load(r2)
-        r4 = r3.q_ns_class(3)(r3.arc_plist['$objects'][1])
-        return r4
+        return NSClassFactory.FromBiPlistStr(r1.data)
 
     @property
     def FontAntialias(self):
@@ -477,7 +518,7 @@ class AppleTermPrefs(object):
         r1 = self.main_pl['TextColor']
         r2 = biplist.readPlistFromString(r1.data)
         r3 = NSArchivedPlist.load(r2)
-        r4 = r3.q_ns_class(2)(r3.arc_plist['$objects'][1])
+        r4 = NSClassFactory.FromNSArchivedPlist(r3)
         return r4
 
     @property
